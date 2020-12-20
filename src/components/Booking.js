@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import moviesData from '../MovieData'
 import { useAuth } from './Auth';
 import Sits from './Sits';
@@ -9,7 +9,7 @@ export default function Booking() {
     const [movie, setMovie] = useState(null);
     const [selectedSits, setSelectedSits] = useState([])
     const currentUser = useAuth();
-
+    let history = useHistory()
 
     useEffect(() => {
         const selectedMovie = movieData.filter(el => id.toString() === el.id.toString())
@@ -37,7 +37,7 @@ export default function Booking() {
         }).then(res => res.json())
         .then(data => console.log(data))
         .catch(err => console.log(err))
-        console.log(bookingDetailsJson)
+        .finally(()=> history.go(0))
     }
 
     return (

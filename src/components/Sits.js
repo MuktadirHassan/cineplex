@@ -9,10 +9,10 @@ for (let i = 0; i < 40; i++) {
     box.push({ available: true, sit: i + 1 })
 }
 export default function Sits({ submitBooking, selectedSits, setSelectedSits }) {
-    let { id } = useParams();
+    let { id, date, time } = useParams();
     const [checkAvailable, setCheckAvailable] = useState([]);
     useEffect(() => {
-        fetch(`http://localhost:8080/bookings/${id}`)
+        fetch(`http://localhost:8080/bookings/${id}/${date}/${time}`)
             .then(res => res.json())
             .then(data => setCheckAvailable(data))
             .catch(err => console.log(err))
@@ -24,7 +24,6 @@ export default function Sits({ submitBooking, selectedSits, setSelectedSits }) {
         const flat = sits.flat(1)
         const sit = flat.map(el => el.sit)
         setOccupied(sit);
-        console.log(sit);
     }, [checkAvailable])
 
 
@@ -58,7 +57,7 @@ export default function Sits({ submitBooking, selectedSits, setSelectedSits }) {
                     box.map((sit, index) => <Sit available={occupied.includes(parseInt(sit.sit)) ? false : true} bookCount={bookCount} sitNum={sit.sit} key={index} handleSits={e => handleSits(e)} handleSitsRemove={e => handleSitsRemove(e)}></Sit>)
                 }
             </div>
-            <button onClick={submitBooking} className='px-20 py-4 my-6 transition rounded-full shadow hover:bg-gray-900 hover:text-white focus:outline-none hover:shadow-lg'>Book</button>
+            <button onClick={submitBooking} className='px-20 py-4 my-6 transition border rounded-full shadow hover:bg-gray-900 hover:text-white focus:outline-none hover:shadow-lg'>Book</button>
         </>
     )
 }
